@@ -1,0 +1,21 @@
+{
+    "collab_server" : "",
+    "contents" : "\n# Load in the data\ndf = read.csv(\"proj1data.csv\")\n\n# Bare_nuclei column (16 records with \"?\")\ntable(df[7])\n# Class column\ntable(df[11])\n\n# Remove records with question marks\ndf <- df[-grep(\"\\\\?\", df$Bare_nuclei),]\n\n### Split data into training, validation, and test sets\nlibrary(caret)\nset.seed(1234)\npartition <- createDataPartition(df$Class, p=.8, list=FALSE, times=1)\ntrainingSet <- df[partition,]\ntestingSet <- df[-partition,]\n\n#---------------------------------------------------------------\n# source:\n# http://trevorstephens.com/kaggle-titanic-tutorial/r-part-5-random-forests/\n\n# modeling\nlibrary(randomForest)\nset.seed(123)\n# random forest\nfit <- randomForest(as.factor(Class) ~ Thickness + Uni_size + Uni_shape + Marg_adhesion\n                    + SECS + Bare_nuclei + Bland_chrom + Normal_nuclei + Mitoses,\n                    data=trainingSet, importance=TRUE, ntree=2000)\n\n# variable importance\nvarImpPlot(fit)\n\n# test with testing data\npred <- predict(fit, testingSet)\ntable(pred, testingSet$Class)\n\n\n\n",
+    "created" : 1490839242117.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3442660283",
+    "id" : "E8C065A0",
+    "lastKnownWriteTime" : 1493907637,
+    "last_content_update" : 1493907637664,
+    "path" : "~/Documents/Senior Year/Spring Semester/BIO254_DataMining/Project1/project.R",
+    "project_path" : "project.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
